@@ -1,0 +1,42 @@
+# C++ objects and libs
+*.slo
+*.lo
+*.o
+*.a
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
+
+# Qt / qmake
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*-build-*
+
+# QtCreator
+*.autosave
+*.qmlproject.user
+*.qmlproject.user.*
+
+# build / packaging output
+/installroot/
+/RPMS/
+/.mb2/
+documentation.list
+
+# local notes & artefacts — never publish
+.claude/
+CLAUDE.md
+FORTSCHRITT.md
+IDEEN-RF-Security.md
+*.png.orig
