@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=harbour-ibt
+Exec=harbour-ibt
+Name=iBT
+
+[X-Sailjail]
+OrganizationName=org.ibt
+ApplicationName=ibt
+Permissions=Bluetooth;Internet;Location
