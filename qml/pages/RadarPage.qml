@@ -16,6 +16,18 @@ Page {
     property real dEff: Math.max(1, dmax / zoom)
     property real heading: sensor.heading               // own orientation (view + geo-projection rotated 180° vs. before)
 
+    // CAMERA CUTOUT (Jolla J2)
+    // Like iWifi's radar, this page draws its own compact header instead of a
+    // Silica `PageHeader`, so it does not get the margin PageHeader keeps for
+    // itself (`_minimumTopMargin` in PageHeader.qml). On the J2 the notch edge
+    // would cut straight through the title and the status line under it, so we
+    // push the header down by the cutout height. Portrait only, as Silica has
+    // it: in landscape the cutout sits at the side and a top margin would be a
+    // gap for nothing. On a phone without a cutout this is zero and costs
+    // nothing.
+    readonly property real topInset: orientation === Orientation.Portrait
+                                     ? Screen.topCutout.height : 0
+
     property bool _attachedList: false
 
     function worldBearing(dev) {
@@ -117,11 +129,29 @@ Page {
             }
         }
 
-        PageHeader {
+        // Compact self-drawn header (see CAMERA CUTOUT note above). Replaces the
+        // Silica PageHeader so the radar gets the full height below it — and so
+        // the J2 notch can be cleared explicitly via radarPage.topInset.
+        Column {
             id: hdr
-            title: qsTr("iBT — Radar")
-            description: bt.discovering ? qsTr("scannt… %1 Geräte").arg(bt.count)
-                                        : qsTr("%1 Geräte").arg(bt.count)
+            anchors { top: parent.top; left: parent.left; right: parent.right
+                      topMargin: Theme.paddingLarge + radarPage.topInset }
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("iBT — Radar")
+                font.pixelSize: Theme.fontSizeLarge
+                color: Theme.highlightColor
+            }
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: Theme.fontSizeTiny
+                color: Theme.secondaryColor
+                text: (bt.discovering ? qsTr("scannt… %1 Geräte").arg(bt.count)
+                                      : qsTr("%1 Geräte").arg(bt.count))
+                      + " · " + qsTr("Rand %1 m · %2× · %3°")
+                        .arg(dEff.toFixed(0)).arg(zoom.toFixed(1))
+                        .arg(Math.round(((heading % 360) + 360) % 360))
+            }
         }
 
         Item {
