@@ -9,7 +9,7 @@ Name:       harbour-ibt
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Passive Bluetooth / BLE scanner and tracker/attack detector
-Version:    0.1.0
+Version:    0.1.1
 Release:    1
 %define _buildhost reproducible-builder
 Group:      Qt/Qt
