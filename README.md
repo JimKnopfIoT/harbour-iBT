@@ -14,6 +14,16 @@ logging or exporting anything.
 > **Jolla JP2601** ("J2", Sailfish OS 5.2). Much of it should work on other
 > Sailfish OS devices too.
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/radar.png" width="270" alt="Heading-up radar view">
+  &nbsp;&nbsp;
+  <img src="screenshots/geraeteliste.png" width="270" alt="Device list with camera-glasses alert">
+</p>
+
+<p align="center"><sub>Left: the heading-up proximity radar. Right: the device list with the “Ruck Zuck” camera-glasses alert. Illustrative screenshots with fictional example data.</sub></p>
+
 ## What it does
 
 - **Live device scan** — name, MAC, address type (random/static), RSSI, rough
