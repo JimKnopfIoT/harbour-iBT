@@ -10,9 +10,9 @@ listens to the advertising data that nearby devices broadcast anyway and makes
 sense of it — without ever transmitting, connecting, intercepting, attacking,
 logging or exporting anything.
 
-> Developed and tested on a **Sony Xperia 10 III** (`pdx213`). Much of it should
-> work on other Sailfish OS devices too, but the Xperia 10 III is the reference
-> device.
+> Developed and tested on a **Sony Xperia 10 III** (`pdx213`) and on a
+> **Jolla JP2601** ("J2", Sailfish OS 5.2). Much of it should work on other
+> Sailfish OS devices too.
 
 ## What it does
 
