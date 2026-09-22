@@ -24,6 +24,10 @@ logging or exporting anything.
 - **Beacon decoding** — iBeacon, Eddystone and AltBeacon.
 - **Unwanted-tracker detection** — flags AirTag / SmartTag / Tile-style trackers
   that may be following you.
+- **Camera-glasses alert (“Ruck Zuck”)** — flags nearby camera / smart glasses
+  (Meta Ray-Ban, Oakley Meta, Snap Spectacles and the like) right in the scan
+  list from their BLE advertising signature, with a confidence rating. It
+  detects **presence only** — not whether a camera is actually recording.
 - **Threat-gadget recognition** — passively classifies well-known hostile
   Bluetooth gadgets by their advertising signature.
 - **Attack detection** — spots advertising-layer BLE-spam / flood activity.
