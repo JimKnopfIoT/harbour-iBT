@@ -33,6 +33,9 @@ OTHER_FILES += \
     qml/cover/CoverPage.qml \
     qml/pages/RadarPage.qml \
     qml/pages/ListPage.qml \
+    qml/pages/RuckZuck.js \
+    qml/images/ruckzuck.svg \
+    qml/images/ruckzuck-alarm.svg \
     qml/pages/DevicePage.qml \
     qml/pages/BtTopologyPage.qml \
     qml/pages/CvePage.qml \
