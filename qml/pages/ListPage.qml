@@ -4,6 +4,7 @@
 */
 import QtQuick 2.2
 import Sailfish.Silica 1.0
+import "RuckZuck.js" as RZ
 
 Page {
     id: listPage
@@ -12,11 +13,40 @@ Page {
     // Snapshot model: after any interaction the list is frozen for 5 s so live
     // scan updates never reset the scroll position while the user reads/scrolls.
     property var listModel: []
-    Component.onCompleted: listModel = bt.devices
+    // Camera-glasses (Ruck Zuck) alerting is folded into this normal scan list:
+    // a match is marked with the red-glasses icon + warn colour right in the row,
+    // and a new sighting raises a toast. Addresses already announced this session.
+    property var _seenGlasses: ({})
+
+    function confColor(c) {
+        if (c === "hoch")   return "#F44336"
+        if (c === "mittel") return "#FF9800"
+        return "#FFD700"
+    }
+
+    // Scan the live list, toast any camera-glasses we haven't announced yet.
+    function checkGlasses() {
+        var hits = RZ.scan(bt.devices)
+        var seen = _seenGlasses
+        for (var i = 0; i < hits.length; ++i) {
+            var a = hits[i].dev.address
+            if (a && !seen[a]) {
+                seen[a] = true
+                showToast(qsTr("⚠ Kamera-Brille: %1 (%2)")
+                          .arg(hits[i].model).arg(hits[i].confidence))
+            }
+        }
+        _seenGlasses = seen
+    }
+
+    Component.onCompleted: { listModel = bt.devices; checkGlasses() }
     Timer { id: freeze; interval: 5000; onTriggered: listPage.listModel = bt.devices }
     Connections {
         target: bt
-        onUpdated: if (!freeze.running) listPage.listModel = bt.devices
+        onUpdated: {
+            if (!freeze.running) listPage.listModel = bt.devices
+            listPage.checkGlasses()
+        }
     }
 
     SilicaListView {
@@ -64,15 +94,20 @@ Page {
             id: item
             height: Theme.itemSizeMedium
 
-            // RSSI bar
+            // Camera-glasses verdict for this device (Ruck Zuck fingerprints).
+            property var glasses: RZ.classify(modelData)
+
+            // RSSI bar — turns to the warn colour when a camera-glass is matched.
             Rectangle {
                 id: bar
                 anchors { left: parent.left; verticalCenter: parent.verticalCenter }
                 width: Theme.paddingSmall
                 height: parent.height * 0.7
                 radius: 2
-                color: modelData.riskColor
-                opacity: modelData.hasRssi ? 0.4 + 0.6 * (modelData.signalPct / 100) : 0.25
+                color: item.glasses.hit ? confColor(item.glasses.confidence)
+                                        : modelData.riskColor
+                opacity: item.glasses.hit ? 1.0
+                         : modelData.hasRssi ? 0.4 + 0.6 * (modelData.signalPct / 100) : 0.25
             }
 
             Column {
@@ -83,7 +118,17 @@ Page {
                 }
                 Row {
                     spacing: Theme.paddingSmall
+                    // Red camera-glasses marker, right in the row when matched.
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: item.glasses.hit
+                        width: Theme.iconSizeSmall; height: width
+                        sourceSize.width: width; sourceSize.height: width
+                        fillMode: Image.PreserveAspectFit
+                        source: Qt.resolvedUrl("../images/ruckzuck-alarm.svg")
+                    }
                     Label {
+                        anchors.verticalCenter: parent.verticalCenter
                         text: (modelData.isThreat ? "⚠☠ " : "")
                               + (modelData.audioVuln ? "⚠ " : "")
                               + (modelData.following ? "⚠ " : "")
@@ -92,6 +137,7 @@ Page {
                                                              : modelData.displayName)
                         color: modelData.isThreat ? (modelData.threatColor || "#F44336")
                                : modelData.following ? "#F44336"
+                               : item.glasses.hit ? confColor(item.glasses.confidence)
                                : (item.highlighted ? Theme.highlightColor : Theme.primaryColor)
                         font.pixelSize: Theme.fontSizeMedium
                         truncationMode: TruncationMode.Fade
@@ -117,6 +163,16 @@ Page {
                                               : ("" + modelData.beacon).split("\n")[0]
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: modelData.following ? "#F44336" : Theme.highlightColor
+                    truncationMode: TruncationMode.Fade
+                    width: parent.width
+                }
+                // Camera-glasses warning line — only on a match.
+                Label {
+                    visible: item.glasses.hit
+                    text: qsTr("⚠ Kamera-Brille: %1 · Konfidenz %2")
+                          .arg(item.glasses.model).arg(item.glasses.confidence)
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: confColor(item.glasses.confidence)
                     truncationMode: TruncationMode.Fade
                     width: parent.width
                 }
