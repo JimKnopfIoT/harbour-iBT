@@ -47,6 +47,10 @@ logging or exporting anything.
 - **Map view** — an optional OpenStreetMap view, used purely to centre on your
   current position; the location never leaves the device except for the tile
   request you trigger.
+- **32 languages** — the interface is translated into 32 languages. German and
+  English are reviewed; the rest are machine translations. Pick one under
+  *About → Language*, or leave it to follow the system language. Long labels
+  wrap instead of being cut off.
 
 ## What it deliberately does NOT do
 

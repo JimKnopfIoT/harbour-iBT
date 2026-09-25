@@ -566,9 +566,9 @@ Page {
             }
 
 
-            Button {
+            WrapButton {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("CVEs für dieses Gerät suchen")
+                label: qsTr("CVEs für dieses Gerät suchen")
                 onClicked: pageStack.push(Qt.resolvedUrl("CvePage.qml"),
                                           { terms: cveTerms() })
             }

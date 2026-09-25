@@ -42,6 +42,13 @@ Page {
                   + "Hinweis: BT-Adressen sind personenbezogene Daten — verantwortungsvoll "
                   + "und nur zur eigenen Lageeinschätzung nutzen.")
             }
+            SectionHeader { text: qsTr("Sprache") }
+            WrapButton {
+                anchors.horizontalCenter: parent.horizontalCenter
+                label: qsTr("Sprache wählen")
+                onClicked: pageStack.push(Qt.resolvedUrl("LanguagePage.qml"))
+            }
+
             SectionHeader { text: qsTr("Adapter") }
             DetailItem { label: qsTr("Name"); value: bt.adapterName || "—" }
             DetailItem { label: qsTr("Adresse"); value: bt.adapterAddress || "—" }

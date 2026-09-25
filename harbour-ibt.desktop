@@ -6,6 +6,6 @@ Exec=harbour-ibt
 Name=iBT
 
 [X-Sailjail]
-OrganizationName=org.ibt
-ApplicationName=ibt
+OrganizationName=harbour-ibt
+ApplicationName=harbour-ibt
 Permissions=Bluetooth;Internet;Location

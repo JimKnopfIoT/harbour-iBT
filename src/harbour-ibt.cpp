@@ -18,11 +18,19 @@
 #include "battery.h"
 #include "cvelookup.h"
 #include "osmfetch.h"
+#include "languagesettings.h"
 
 int main(int argc, char *argv[])
 {
     QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
     QScopedPointer<QQuickView> view(SailfishApp::createView());
+
+    // After createView(): it has installed libsailfishapp's device-locale
+    // translator, and the translator installed last is consulted first. A UI
+    // language chosen in the app must win over the device, so it goes on now.
+    LanguageSettings language;
+    LanguageSettings::applyTo(application.data());
+    view->rootContext()->setContextProperty("language", &language);
 
     QScopedPointer<BtBackend> bt(new BtBackend(view.data()));
     view->rootContext()->setContextProperty("bt", bt.data());
