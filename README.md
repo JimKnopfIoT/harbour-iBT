@@ -96,4 +96,7 @@ Even so, **how you use it is your responsibility**:
 - Observe only where you are permitted to.
 
 Use it to understand and harden your own Bluetooth environment.
+
+AI assisted development
+
 See `LICENSE` (GPLv3) and `THIRD-PARTY-NOTICES.md`.
